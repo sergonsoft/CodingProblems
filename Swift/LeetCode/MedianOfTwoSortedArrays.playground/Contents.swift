@@ -1,3 +1,11 @@
+import XCTest
+
+struct TwoSortedArraysTestData {
+    var num1: [Int]
+    var num2: [Int]
+    var result: Double
+}
+
 class Solution {
     func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
         let nums1Count = nums1.count
@@ -33,32 +41,40 @@ class Solution {
     }
 }
 
-func test<T:Equatable>(name:String, _ actual:T, _ expected:T) {
-    assert(expected == actual, "\(name): Expected: \(expected), Actual: \(actual)")
+class MedianOfTwoSortedArraysTest: XCTestCase {
+    let testData: [TwoSortedArraysTestData] = [
+        //Explanation: merged array = [1,2,3] and median is 2.
+        TwoSortedArraysTestData(num1: [1,3], num2: [2], result: 2.00000),
+        //Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+        TwoSortedArraysTestData(num1: [1,2], num2: [3,4], result: 2.50000)
+    ]
+
+    let s = Solution()
+
+    func testFor() {
+        measure {
+            for td in testData {
+                XCTAssertEqual(s.findMedianSortedArrays(td.num1, td.num2), td.result)
+            }
+        }
+    }
+    
+    func testForEach() {
+        measure {
+            testData.forEach { td in
+                XCTAssertEqual(s.findMedianSortedArrays(td.num1, td.num2), td.result)
+            }
+        }
+    }
+
+    func testMap() {
+        measure {
+            testData.map { td in
+                XCTAssertEqual(s.findMedianSortedArrays(td.num1, td.num2), td.result)
+            }
+        }
+    }
 }
 
-let s = Solution()
 
-// Example 1:
-
-//Input:
-var nums1:[Int] = [1,3]
-var nums2:[Int] = [2]
-// Output:
-var expectedResult:Double = 2.00000
-//Explanation: merged array = [1,2,3] and median is 2.
-
-test(name: "Example 1", s.findMedianSortedArrays(nums1, nums2), expectedResult)
-
-// Example 2:
-
-//Input:
-nums1 = [1,2]
-nums2 = [3,4]
-//Output:
-expectedResult = 2.50000
-//Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
-
-test(name: "Example 2", s.findMedianSortedArrays(nums1, nums2), expectedResult)
-
-print("OK")
+MedianOfTwoSortedArraysTest.defaultTestSuite.run()
