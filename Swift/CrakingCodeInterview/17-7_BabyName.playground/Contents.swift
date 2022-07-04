@@ -61,8 +61,25 @@ func mergeSynonyms(_ names:[(String, String)]) -> [Set<String>] {
     return synonyms
 }
 
-func reduceSynonyms(_ synonyms:[Set<String>]) -> [Set<String>] {
-    return synonyms
+func reduceSynonyms(_ raw_synonyms:[Set<String>]) -> [Set<String>] {
+    var reducedSynonyms:[Set<String>] = []
+    
+    for raw_synonym in raw_synonyms {
+        var merged = false
+        
+        for i in 0..<reducedSynonyms.count {
+            if !reducedSynonyms[i].intersection(raw_synonym).isEmpty {
+                reducedSynonyms[i].formUnion(raw_synonym)
+                merged = true
+            }
+        }
+        
+        if !merged {
+            reducedSynonyms.append(raw_synonym)
+        }
+    }
+    
+    return reducedSynonyms
 }
 
 typealias NameFrequency = (name:String, frequency:Int)
@@ -171,7 +188,7 @@ func getSetOfSynonyms(forName name:String) -> Set<String>? {
 
 let input_names = "John (15), Jon (12), Chris (13), Kris (4), Christopher (19)"
 let input_synonyms = "(Jon, John), (John, Johnny), (Chris, Kris), (Chris, Christopher)"
-let expected_output:[NameFrequency] = [ ("John",27), ("Kris", 36) ]
+let expected_output:[NameFrequency] = [ ("John", 27), ("Kris", 36) ]
 
 
 let synonyms_pairs = parseSynonyms(input_synonyms)
