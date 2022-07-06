@@ -95,16 +95,6 @@ func parseNames(from names:String) -> [NameFrequency] {
     return a
 }
 
-func prepareResults(_ synonyms_frequency:[Set<String>:Int]) -> [(String, Int)] {
-    var result: [(String, Int)] = []
-    
-    for s in synonyms_frequency.keys {
-        result.append((s[s.startIndex], synonyms_frequency[s]!))
-    }
-    
-    return result
-}
-
 func countName(names: [NameFrequency], synonyms:[Set<String>]) -> [Set<String>:Int] {
     var nc:[Set<String>:Int] = [:]
 
@@ -127,6 +117,17 @@ func countName(names: [NameFrequency], synonyms:[Set<String>]) -> [Set<String>:I
 /*
  *********** Testing functions *************
  */
+func prepareResults(_ synonyms_frequency:[Set<String>:Int]) -> [(String, Int)] {
+    var result: [(String, Int)] = []
+    
+    for s in synonyms_frequency.keys {
+        result.append((s[s.startIndex], synonyms_frequency[s]!))
+    }
+    
+    return result
+}
+
+
 func compareResults(lhs:[NameFrequency], rhs:[NameFrequency], in synonyms:[Set<String>]) -> Bool {
     guard lhs.count == rhs.count else {
         return false
@@ -186,15 +187,22 @@ func getSetOfSynonyms(forName name:String) -> Set<String>? {
  *  Solution
  * ******************************************************* */
 
-let input_names = "John (15), Jon (12), Chris (13), Kris (4), Christopher (19)"
-let input_synonyms = "(Jon, John), (John, Johnny), (Chris, Kris), (Chris, Christopher)"
+let names_input = "John (15), Jon (12), Chris (13), Kris (4), Christopher (19)"
+let synonyms_input = "(Jon, John), (John, Johnny), (Chris, Kris), (Chris, Christopher)"
 let expected_output:[NameFrequency] = [ ("John", 27), ("Kris", 36) ]
 
+let synonyms = reduceSynonyms(
+                    mergeSynonyms(
+                        parseSynonyms(synonyms_input)
+                    )
+                )
 
-let synonyms_pairs = parseSynonyms(input_synonyms)
-let synonyms = reduceSynonyms(mergeSynonyms(synonyms_pairs))
-let name_frequency = parseNames(from: input_names)
-var names_counted = countName(names: name_frequency, synonyms:synonyms)
+let names_counted = countName(
+                    names: parseNames(
+                        from: names_input
+                    ),
+                    synonyms: synonyms
+                )
 
 print("Name & synonyms frequesncy: \(names_counted)")
 
