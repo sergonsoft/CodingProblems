@@ -1,6 +1,12 @@
 /**
  Problem: Baby Names
- Each year, the government releases a list of the 10000 most common baby names and their frequencies {the number of babies with that name). The only problem with this is that some names have multiple spellings. For example, "John" and "Jon" are essentially the same name but would be listed separately in the list. Given two lists, one of names/frequencies and the other of pairs of equivalent names, write an atgorithm to print a new list of the true frequency of each name. Note that if John and Jon are synonyms, and Jon and Johnny are synonyms, then John and Johnny are synonyms, (it is both transitive and symmetric.) In the final list, any name can be used as the "real" name,
+ Each year, the government releases a list of the 10000 most common baby names and their frequencies
+ {the number of babies with that name). The only problem with this is that some names have multiple
+ spellings. For example, "John" and "Jon" are essentially the same name but would be listed separately in
+ the list. Given two lists, one of names/frequencies and the other of pairs of equivalent names, write an
+ atgorithm to print a new list of the true frequency of each name. Note that if John and Jon are synonyms,
+ and Jon and Johnny are synonyms, then John and Johnny are synonyms, (it is both transitive and
+ symmetric.) In the final list, any name can be used as the "real" name,
  
  EXAMPLE
  Input:
@@ -95,7 +101,7 @@ func parseNames(from names:String) -> [NameFrequency] {
     return a
 }
 
-func countName(names: [NameFrequency], synonyms:[Set<String>]) -> [Set<String>:Int] {
+func countName(names: [NameFrequency], synonyms:[Set<String>])  -> [Set<String>:Int] {
     var nc:[Set<String>:Int] = [:]
 
     for s in synonyms {
